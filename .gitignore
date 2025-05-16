@@ -1,0 +1,16 @@
+# Ignore the APKs inside the directory
+android_apks_folder/*
+!android_apks_folder/.keep
+
+
+# Ignore the MobSF analysis results directory
+analysis_results/
+
+# Ignore the app permissions and code security extraction script
+app_permissions_and_code_security/
+
+*.apk
+*.json
+*.csv
+.DS_Store
+Thumbs.db
