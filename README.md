@@ -36,8 +36,6 @@ Before running the script, make sure you have the following installed and set up
    ```bash
    docker pull opensecurity/mobile-security-framework-mobsf:latest
    docker run -it --rm -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
-
-   # Default username and password: mobsf/mobsf
    ```
    - Wait for MobSF to fully boot.
 
@@ -65,6 +63,7 @@ After execution, the results will be saved in the `analysis_results/` directory:
 
 - Each `.json` file is a full MobSF static analysis report.
 - The `results.csv` contains a summary of all scanned apps.
+- App PDFs are in a directory called `analysis_results/pdf_reports`
 
 ---
 

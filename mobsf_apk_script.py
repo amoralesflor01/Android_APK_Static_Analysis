@@ -24,12 +24,14 @@ os.makedirs(CSV_DIR, exist_ok=True)
 os.makedirs(JSON_DIR, exist_ok=True)
 os.makedirs(PDF_DIR, exist_ok=True)
 
+
 def upload(file):
     print(f"Uploading file: {file}")
     multipart_data = MultipartEncoder(fields={'file': (file, open(file, 'rb'), 'application/octet-stream')})
     headers = {'Content-Type': multipart_data.content_type, 'Authorization': APIKEY}
     response = requests.post(SERVER + '/api/v1/upload', data=multipart_data, headers=headers)
     return response.text
+
 
 def scan(data):
     print("Scanning file...")
@@ -38,12 +40,14 @@ def scan(data):
     response = requests.post(SERVER + '/api/v1/scan', data=post_dict, headers=headers)
     return response.text
 
+
 def json_resp(data):
     print("Generating JSON report...")
     headers = {'Authorization': APIKEY}
     data = {"hash": json.loads(data)["hash"]}
     response = requests.post(SERVER + '/api/v1/report_json', data=data, headers=headers)
     return json.loads(response.text)
+
 
 def pdf_report(data, filename):
     print("Generating PDF report...")
@@ -53,15 +57,18 @@ def pdf_report(data, filename):
     with open(filename, 'wb') as pdf_file:
         pdf_file.write(response.content)
 
+
 def save_to_json(result, filename):
     with open(filename, 'w') as jsonfile:
         json.dump(result, jsonfile, indent=4)
+
 
 def delete(data):
     print("Deleting scan from MobSF...")
     headers = {'Authorization': APIKEY}
     data = {"hash": json.loads(data)["hash"]}
     requests.post(SERVER + '/api/v1/delete_scan', data=data, headers=headers)
+
 
 def extract_dangerous_permissions(permissions):
     """Extract only permissions with 'dangerous' status"""
@@ -71,6 +78,7 @@ def extract_dangerous_permissions(permissions):
             if details.get('status') == 'dangerous':
                 dangerous_perms[perm] = details
     return dangerous_perms
+
 
 def extract_manifest_analysis(manifest_analysis):
     """Extract rule, severity, description from manifest findings"""
@@ -85,6 +93,7 @@ def extract_manifest_analysis(manifest_analysis):
             extracted_findings.append(extracted_finding)
     return extracted_findings
 
+
 def extract_code_analysis(code_analysis):
     """Extract 3rd level keys and their metadata from code analysis"""
     extracted_findings = {}
@@ -93,6 +102,7 @@ def extract_code_analysis(code_analysis):
             if 'metadata' in finding_data:
                 extracted_findings[finding_key] = finding_data['metadata']
     return extracted_findings
+
 
 def extract_permission_mapping(permission_mapping):
     """Extract top level and second level keys from permission mapping"""
@@ -104,6 +114,7 @@ def extract_permission_mapping(permission_mapping):
             else:
                 extracted_mapping[top_key] = second_level
     return extracted_mapping
+
 
 def process_result_for_csv(result):
     """Process the JSON result to extract only the required fields for CSV"""
@@ -136,6 +147,7 @@ def process_result_for_csv(result):
     processed_result['version_name'] = result.get('version_name')  # This might be at root level
     
     return processed_result
+
 
 def export_to_csv(results, csv_file):
     if not results:
